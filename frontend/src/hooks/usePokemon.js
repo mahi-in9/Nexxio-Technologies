@@ -1,20 +1,35 @@
-import { use, useState } from "react";
+import { useState } from "react";
 
-function usePokemon(data) {
+function usePokemon(datas) {
   const [index, setIndex] = useState(0);
 
-  const currentPokemon = data[index];
+  const currentPokemon = datas[index];
 
-  const total = data.length;
+  const total = datas.length;
 
-  const prev = Math.max(index - 1, 0);
+  const prev = () => setIndex(Math.max(index - 1, 0));
 
-  const next = Math.min(index + 1, total - 1);
+  const next = () => setIndex(Math.min(index + 1, total - 1));
+
+  const selectByName = (query) => {
+    const newIndex = datas.findIndex((d) => d.name === query);
+
+    if (newIndex !== -1) setIndex(newIndex);
+  };
 
   const isFirst = index === 0;
   const isLast = index === total - 1;
 
-  return { currentPokemon, total, index, prev, next, isFirst, isLast };
+  return {
+    currentPokemon,
+    total,
+    index,
+    prev,
+    next,
+    isFirst,
+    isLast,
+    selectByName,
+  };
 }
 
 export default usePokemon;
